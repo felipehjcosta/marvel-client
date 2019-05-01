@@ -29,7 +29,7 @@ android {
 }
 
 kotlin {
-    android
+    android()
     js {
         compilations.main {
             configure([compileKotlinJs, compileTestKotlinJs]) {
