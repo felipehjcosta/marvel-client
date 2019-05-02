@@ -11,9 +11,5 @@ rootProject.name = 'marvel-client'
 
 enableFeaturePreview('GRADLE_METADATA')
 
-def module(group, name) {
-    include(name)
-    project(":$name").projectDir = file("$group/$name")
-}
-
-module('library', 'marvel-client')
+include ':library'
+include ':androidApp'

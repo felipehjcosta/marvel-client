@@ -2,15 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'maven-publish'
 
-repositories {
-    google()
-    maven { url "http://dl.bintray.com/kotlin/kotlin-eap" }
-    maven { url "https://kotlin.bintray.com/kotlinx" }
-    maven { url "https://plugins.gradle.org/m2/" }
-    maven { url "https://dl.bintray.com/kotlin/ktor" }
-    jcenter()
-}
-
 group 'com.github.felipehjcosta.marvelclient'
 version '0.1.0'
 
