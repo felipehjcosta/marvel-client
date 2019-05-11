@@ -38,6 +38,7 @@ kotlin {
             dependencies {
                 implementation kotlin('stdlib-common')
                 implementation "io.ktor:ktor-client-core:$ktor_version"
+                implementation "io.ktor:ktor-client-logging:$ktor_version"
             }
         }
         commonTest {
@@ -50,6 +51,7 @@ kotlin {
             dependencies {
                 implementation kotlin('stdlib-jdk8')
                 implementation "io.ktor:ktor-client-android:$ktor_version"
+                implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
                 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
             }
         }
@@ -63,6 +65,7 @@ kotlin {
             dependencies {
                 implementation kotlin('stdlib-js')
                 implementation "io.ktor:ktor-client-js:$ktor_version"
+                implementation "io.ktor:ktor-client-logging-js:$ktor_version"
             }
         }
         jsTest {
