@@ -11,7 +11,7 @@ internal expect val ApplicationDispatcher: CoroutineDispatcher
 class ApplicationApi {
     private val client = HttpClient()
 
-    private var address = Url("https://tools.ietf.org/rfc/rfc1866.txt")
+    private var address = Url("https://ktor.io/pages.txt")
 
     fun about(callback: (String) -> Unit) {
         GlobalScope.apply {
