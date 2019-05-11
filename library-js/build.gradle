@@ -1,38 +1,27 @@
+apply plugin: "com.moowork.node"
 apply plugin: 'kotlin2js'
-apply plugin: 'org.jetbrains.kotlin.frontend'
 
 compileKotlin2Js {
     kotlinOptions.metaInfo = true
-    kotlinOptions.outputFile = "$project.buildDir.path/js/${project.name}.js"
     kotlinOptions.sourceMap = true
-    kotlinOptions.moduleKind = 'umd'
+    kotlinOptions.suppressWarnings = true
+    kotlinOptions.verbose = true
     kotlinOptions.main = "call"
+    kotlinOptions.moduleKind = "umd"
 }
 
-kotlinFrontend {
-    downloadNodeJsVersion = "$node_version"
-    
-    webpackBundle {
-        bundleName = "main"
-        contentPath = file('web')
-    }
-}
-
-sourceSets {
-    main {
-        kotlin.srcDirs += "src"
-        resources.srcDirs += "resources"
-        output.resourcesDir = "build/js/min/"
-    }
-}
+def outputDir = "${projectDir}/node_modules"
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
-    implementation project(':library')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js"
+    compile project(':library')
 }
 
-task assembleWeb(type: Sync) {
+task assembleJs(type: Sync) {
+    println(">>> assembleJs")
     configurations.compile.each { File file ->
+        println(">>> each file: ${file}")
+        println(">>> each from: ${zipTree(file.absolutePath)}")
         from(zipTree(file.absolutePath), {
             includeEmptyDirs = false
             include { fileTreeElement ->
@@ -42,10 +31,31 @@ task assembleWeb(type: Sync) {
             }
         })
     }
+    println(">>> from: ${compileKotlin2Js.destinationDir}")
     from compileKotlin2Js.destinationDir
-    into "${projectDir}/web"
-
+    println(">>> into: ${outputDir}")
+    into "${outputDir}"
     dependsOn classes
 }
 
-assemble.dependsOn assembleWeb
+// wont be needed once https://github.com/ktorio/ktor/issues/961 is fixed
+task installTextEncode(type: NpmTask, dependsOn: [npmInstall]) {
+    // install the text-encoding package only
+    args = ['install', 'text-encoding']
+}
+
+task webpack(type: NodeTask, dependsOn: [npmInstall, installTextEncode]) {
+    script = file("$projectDir/node_modules/webpack/bin/webpack")
+}
+
+assemble.dependsOn assembleJs
+webpack.dependsOn assemble
+
+node {
+    version = "$node_version"
+    download = false
+}
+
+clean.doFirst() {
+    delete "$outputDir"
+}

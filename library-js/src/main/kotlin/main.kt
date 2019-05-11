@@ -2,7 +2,9 @@ import com.github.felipehjcosta.marvelclient.ApplicationApi
 
 @JsName("libFunction")
 fun libFunction() {
+    println("libFunction")
     ApplicationApi().about {
-        println("it")
+        println("about")
+        println(it)
     }
 }

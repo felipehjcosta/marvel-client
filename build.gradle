@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.android.tools.build:gradle:$android_gradle_plugin"
-        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:$kotlin_frontend_plugin"
+        classpath "com.moowork.gradle:gradle-node-plugin:$gradle_node_plugin"
     }
 }
 
