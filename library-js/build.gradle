@@ -13,15 +13,12 @@ compileKotlin2Js {
 def outputDir = "${projectDir}/node_modules"
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-js"
-    compile project(':library')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
+    implementation project(':library')
 }
 
 task assembleJs(type: Sync) {
-    println(">>> assembleJs")
-    configurations.compile.each { File file ->
-        println(">>> each file: ${file}")
-        println(">>> each from: ${zipTree(file.absolutePath)}")
+    configurations.runtimeClasspath.each { File file ->
         from(zipTree(file.absolutePath), {
             includeEmptyDirs = false
             include { fileTreeElement ->
@@ -31,9 +28,7 @@ task assembleJs(type: Sync) {
             }
         })
     }
-    println(">>> from: ${compileKotlin2Js.destinationDir}")
     from compileKotlin2Js.destinationDir
-    println(">>> into: ${outputDir}")
     into "${outputDir}"
     dependsOn classes
 }
