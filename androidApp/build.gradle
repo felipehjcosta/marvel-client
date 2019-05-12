@@ -7,7 +7,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.github.felipehjcosta.androidapp"
+        applicationId "com.github.felipehjcosta.marvelclient.androidapp"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
