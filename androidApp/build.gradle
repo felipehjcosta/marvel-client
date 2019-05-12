@@ -15,6 +15,8 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        buildConfigField("String", "MARVEL_PRIVATE_KEY", "\"" + MARVEL_PRIVATE_KEY + "\"")
+        buildConfigField("String", "MARVEL_PUBLIC_KEY", "\"" + MARVEL_PUBLIC_KEY + "\"")
     }
 
     buildTypes {
