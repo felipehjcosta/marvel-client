@@ -12,7 +12,7 @@ module.exports = (env) => {
             ]
         },
         output: {
-            filename: "kotlin-single-js-file-lib.js",
+            filename: "main.js",
             libraryTarget: "umd",
             path: path.resolve(__dirname, 'build/webpack')
         },
