@@ -41,6 +41,7 @@ task installTextEncode(type: NpmTask, dependsOn: [npmInstall]) {
 
 task webpack(type: NodeTask, dependsOn: [npmInstall, installTextEncode]) {
     script = file("$projectDir/node_modules/webpack/bin/webpack")
+    args = ["--env.MARVEL_PRIVATE_KEY=$MARVEL_PRIVATE_KEY", "--env.MARVEL_PUBLIC_KEY=$MARVEL_PUBLIC_KEY"]
 }
 
 assemble.dependsOn assembleJs
