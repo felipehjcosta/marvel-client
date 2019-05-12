@@ -39,6 +39,8 @@ kotlin {
                 implementation kotlin('stdlib-common')
                 implementation "io.ktor:ktor-client-core:$ktor_version"
                 implementation "io.ktor:ktor-client-logging:$ktor_version"
+                implementation "com.soywiz:krypto-metadata:1.6.0"
+                implementation "com.soywiz:klock-metadata:1.4.0"
             }
         }
         commonTest {
@@ -53,6 +55,8 @@ kotlin {
                 implementation "io.ktor:ktor-client-android:$ktor_version"
                 implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
                 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
+                implementation "com.soywiz:krypto-android:1.6.0"
+                implementation "com.soywiz:klock-android:1.4.0"
             }
         }
         androidTest {
@@ -66,6 +70,8 @@ kotlin {
                 implementation kotlin('stdlib-js')
                 implementation "io.ktor:ktor-client-js:$ktor_version"
                 implementation "io.ktor:ktor-client-logging-js:$ktor_version"
+                implementation "com.soywiz:krypto-js:1.6.0"
+                implementation "com.soywiz:klock-js:1.4.0"
             }
         }
         jsTest {
