@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.github.felipehjcosta.androidapp">
+          package="com.github.felipehjcosta.marvelclient.androidapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

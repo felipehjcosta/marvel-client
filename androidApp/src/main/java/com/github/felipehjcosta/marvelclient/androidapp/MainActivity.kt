@@ -1,4 +1,4 @@
-package com.github.felipehjcosta.androidapp
+package com.github.felipehjcosta.marvelclient.androidapp
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
