@@ -46,6 +46,7 @@ task webpack(type: NodeTask, dependsOn: [npmInstall, installTextEncode]) {
 
 assemble.dependsOn assembleJs
 webpack.dependsOn assemble
+build.dependsOn webpack
 
 node {
     version = "$node_version"
