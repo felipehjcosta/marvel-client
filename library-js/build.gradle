@@ -48,9 +48,17 @@ assemble.dependsOn assembleJs
 webpack.dependsOn assemble
 build.dependsOn webpack
 
+repositories.whenObjectAdded {
+    if (it instanceof IvyArtifactRepository) {
+        metadataSources {
+            artifact()
+        }
+    }
+}
+
 node {
     version = "$node_version"
-    download = false
+    download = true
 }
 
 clean.doFirst() {
