@@ -49,7 +49,7 @@ class ApplicationApiTests {
     private val applicationApi = ApplicationApi(fakeClient, marvelPrivateKey, marvelPublicKey)
 
     @Test
-    fun name() = runTest {
-        assertEquals("{\"message\":\"Hello World!\"}", applicationApi.about())
+    fun ensureFetchCharactersReturnsWithSuccess() = runTest {
+        assertEquals("{\"message\":\"Hello World!\"}", applicationApi.fetchCharacters())
     }
 }

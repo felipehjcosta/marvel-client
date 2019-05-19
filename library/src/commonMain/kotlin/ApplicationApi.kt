@@ -28,7 +28,7 @@ class ApplicationApi(
 
     private var baseAddress = "https://gateway.marvel.com/v1/public/characters"
 
-    suspend fun about(): String {
+    suspend fun fetchCharacters(): String {
         return client.get {
             val timestamp = timestamp
             val fullUrl =
