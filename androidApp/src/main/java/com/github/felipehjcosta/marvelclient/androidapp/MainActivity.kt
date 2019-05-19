@@ -14,15 +14,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val api = ApplicationApi(BuildConfig.MARVEL_PRIVATE_KEY, BuildConfig.MARVEL_PUBLIC_KEY)
+        val api = ApplicationApi.newInstance(BuildConfig.MARVEL_PRIVATE_KEY, BuildConfig.MARVEL_PUBLIC_KEY)
 
-        api.about {
-            GlobalScope.apply {
-                launch(Dispatchers.Main) {
-                    findViewById<TextView>(R.id.about).text = it
-                }
-            }
-        }
+//        api.about {
+//            GlobalScope.apply {
+//                launch(Dispatchers.Main) {
+//                    findViewById<TextView>(R.id.about).text = it
+//                }
+//            }
+//        }
 
         setContentView(R.layout.activity_main)
     }

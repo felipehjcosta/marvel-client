@@ -6,7 +6,7 @@ val marvelPublicKey: String = js("MARVEL_PUBLIC_KEY")
 
 @JsName("libFunction")
 fun libFunction() {
-    ApplicationApi(marvelPrivateKey, marvelPublicKey).about(::showContent)
+//    ApplicationApi.newInstance(marvelPrivateKey, marvelPublicKey).about(::showContent)
 }
 
 fun showContent(content: String) {

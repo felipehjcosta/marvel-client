@@ -56,6 +56,8 @@ kotlin {
             dependencies {
                 implementation kotlin('test-common')
                 implementation kotlin('test-annotations-common')
+                implementation "io.ktor:ktor-client-mock:$ktor_version"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.2.0"
             }
         }
         androidMain {
@@ -72,6 +74,10 @@ kotlin {
             dependencies {
                 implementation kotlin('test')
                 implementation kotlin('test-junit')
+                implementation 'junit:junit:4.12'
+                implementation "io.ktor:ktor-client-mock-jvm:$ktor_version"
+                implementation "com.soywiz:krypto-android:$krypto_version"
+                implementation "com.soywiz:klock-android:$klock_version"
             }
         }
         jsMain {
@@ -86,6 +92,8 @@ kotlin {
         jsTest {
             dependencies {
                 implementation kotlin('test-js')
+                implementation "io.ktor:ktor-client-mock-js:$ktor_version"
+                implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.2.0"
             }
         }
     }
