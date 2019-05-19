@@ -33,6 +33,15 @@ kotlin {
             }
         }
     }
+
+    // Configure all compilations of all targets:
+    targets.all {
+        compilations.all {
+            kotlinOptions {
+                freeCompilerArgs += ["-Xuse-experimental=kotlin.Experimental"]
+            }
+        }
+    }
     sourceSets {
         commonMain {
             dependencies {
