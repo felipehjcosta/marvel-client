@@ -9,7 +9,7 @@ version '0.1.0'
 android {
     compileSdkVersion 28
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
     }
     buildTypes {
         release {
