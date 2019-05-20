@@ -11,6 +11,8 @@ import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.client.request.url
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.io.core.toByteArray
 
 internal expect val ApplicationDispatcher: CoroutineDispatcher
@@ -34,6 +36,12 @@ class ApplicationApi(
             val fullUrl =
                 "$baseAddress?limit=20&offset=0&ts=$timestamp&apikey=$marvelPublicKey&hash=${generateHash(timestamp)}"
             url(fullUrl)
+        }
+    }
+
+    fun fetchCharacters(callback: (String) -> Unit) {
+        GlobalScope.launch(ApplicationDispatcher) {
+            callback(fetchCharacters())
         }
     }
 

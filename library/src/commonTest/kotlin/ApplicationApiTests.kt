@@ -3,6 +3,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.MockHttpResponse
 import io.ktor.http.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.io.ByteReadChannel
 import kotlinx.io.charsets.Charsets
 import kotlinx.io.core.toByteArray
@@ -49,7 +50,16 @@ class ApplicationApiTests {
     private val applicationApi = ApplicationApi(fakeClient, marvelPrivateKey, marvelPublicKey)
 
     @Test
-    fun ensureFetchCharactersReturnsWithSuccess() = runTest {
+    fun ensureFetchCharactersExecuteWithSuccess() = runTest {
         assertEquals("{\"message\":\"Hello World!\"}", applicationApi.fetchCharacters())
+    }
+
+    @Test
+    fun ensureFetchCharactersWithCallbackExecuteWithSuccess() = runTest{
+        applicationApi.fetchCharacters {
+            assertEquals("{\"message\":\"Hello World!\"}", it)
+        }
+
+        delay(2000L)
     }
 }
