@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.io.core.toByteArray
+import kotlin.js.JsName
 
 internal expect val ApplicationDispatcher: CoroutineDispatcher
 
@@ -52,6 +53,7 @@ class ApplicationApi(
     }
 
     companion object {
+        @JsName("newInstance")
         fun newInstance(
             marvelPrivateKey: String,
             marvelPublicKey: String
