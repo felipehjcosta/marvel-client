@@ -4,7 +4,6 @@ node {
     version = "$node_version"
     npmVersion = "$npm_version"
     download = true
-    nodeModulesDir = file(buildDir)
 }
 
 // Workaround the problem with Node downloading:
@@ -16,15 +15,4 @@ repositories.whenObjectAdded {
         }
     }
 }
-
-task prepareNodePackage(type: Copy) {
-    from("npm") {
-        include 'package.json'
-        include 'package-lock.json'
-        expand(project.properties + [kotlinDependency: ""])
-    }
-    into "$node.nodeModulesDir"
-}
-
-npmInstall.dependsOn prepareNodePackage
 

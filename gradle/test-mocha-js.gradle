@@ -24,7 +24,7 @@ kotlin.targets.matching { it.platformType.name == 'js' }.all { target->
                 description: "Installs Node dependencies for 'test' compilation of target '${targetName}'",
                 dependsOn: [mainCompilationTask]) {
             from mainCompilationTask.destinationDir
-            into "$node.nodeModulesDir/node_modules"
+            into "node_modules"
 
             def configuration = testCompilation.runtimeDependencyFiles
             from(files {
@@ -47,7 +47,7 @@ kotlin.targets.matching { it.platformType.name == 'js' }.all { target->
                 description: "Runs tests with Mocha for 'test' compilation of target '${targetName}'",
                 type: NodeTask,
                 dependsOn: [testCompilationTask, installDependenciesMochaNode]) {
-            script = file("$node.nodeModulesDir/node_modules/mocha/bin/mocha")
+            script = file("$projectDir/node_modules/mocha/bin/mocha")
             args = [testCompilationTask.outputFile, '--require', 'source-map-support/register']
             if (project.hasProperty("teamcity")) args += ['--reporter', 'mocha-teamcity-reporter']
         }
