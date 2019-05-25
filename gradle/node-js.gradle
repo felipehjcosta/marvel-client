@@ -16,3 +16,6 @@ repositories.whenObjectAdded {
     }
 }
 
+task webpack(type: NodeTask, dependsOn: [npmInstall]) {
+    script = file("$projectDir/node_modules/webpack/bin/webpack")
+}
