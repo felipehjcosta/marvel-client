@@ -99,5 +99,10 @@ kotlin {
     }
 }
 
+// workaround for https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+    compileClasspath
+}
+
 apply from: rootProject.file('gradle/node-js.gradle')
 apply from: rootProject.file('gradle/test-mocha-js.gradle')
