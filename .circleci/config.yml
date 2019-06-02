@@ -41,7 +41,7 @@ reference:
       command: ./gradlew androidDependencies
 
 jobs:
-  build:
+  test_android:
     <<: *android_config
     steps:
     - checkout
@@ -50,11 +50,11 @@ jobs:
     - *android_dependencies
     - *save_gradle_cache
     - run:
-        name: "Build"
-        command: ./gradlew build --console=plain -Dorg.gradle.parallel=false
+        name: "Test Android target"
+        command: ./gradlew testDebugUnitTest --console=plain -Dorg.gradle.parallel=false
 
 workflows:
   version: 2
   build:
     jobs:
-     - build
+     - test_android
