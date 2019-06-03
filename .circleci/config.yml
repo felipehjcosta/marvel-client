@@ -53,8 +53,21 @@ jobs:
         name: "Test Android target"
         command: ./gradlew testDebugUnitTest --console=plain -Dorg.gradle.parallel=false
 
+  test_js:
+    <<: *android_config
+    steps:
+      - checkout
+      - *generate_cache_key
+      - *restore_gradle_cache
+      - *android_dependencies
+      - *save_gradle_cache
+      - run:
+          name: "Test JS target"
+          command: ./gradlew jsTest --console=plain -Dorg.gradle.parallel=false
+
 workflows:
   version: 2
   build:
     jobs:
      - test_android
+     - test_js
