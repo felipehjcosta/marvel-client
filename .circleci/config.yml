@@ -40,6 +40,20 @@ reference:
       name: Download Android Dependencies
       command: ./gradlew androidDependencies
 
+  ios_config: &ios_config
+    working_directory: *workspace
+    macos:
+      xcode: "10.2.0"
+    environment:
+      FL_OUTPUT_DIR: output
+      ANDROID_HOME: "/usr/local/share/android-sdk"
+      PATH: "$PATH:$ANDROID_HOME/tools/bin"
+    dependencies:
+      override:
+        - brew tap caskroom/cask
+        - brew tap caskroom/versions
+        - brew cask install android-sdk
+
 jobs:
   test_android:
     <<: *android_config
@@ -65,9 +79,22 @@ jobs:
           name: "Test JS target"
           command: ./gradlew jsTest --console=plain -Dorg.gradle.parallel=false
 
+  test_ios:
+    <<: *ios_config
+    steps:
+      - checkout
+      - *generate_cache_key
+      - *restore_gradle_cache
+      - *android_dependencies
+      - *save_gradle_cache
+      - run:
+          name: "Test iOS target"
+          command: ./gradlew iosTest --console=plain -Dorg.gradle.parallel=false
+
 workflows:
   version: 2
   build:
     jobs:
      - test_android
      - test_js
+     - test_ios
