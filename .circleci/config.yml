@@ -81,6 +81,8 @@ jobs:
 
   test_ios:
     <<: *ios_config
+    # use a --login shell so our "set Ruby version" command gets picked up for later steps
+    shell: /bin/bash --login -o pipefail
     steps:
       - checkout
       - run:
