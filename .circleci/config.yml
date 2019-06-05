@@ -79,12 +79,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Java 8
-          command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew tap AdoptOpenJDK/openjdk
-            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install adoptopenjdk8
-            /usr/libexec/java_home -V
-      - run:
           name: Install Android sdk
           command: |
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
@@ -95,7 +89,7 @@ jobs:
             echo 'export ANDROID_HOME="/usr/local/share/android-sdk"' >> $BASH_ENV
             echo 'export ANDROID_SDK_HOME="/usr/local/share/android-sdk"' >> $BASH_ENV
             echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> $BASH_ENV
-            echo 'export JAVA_HOME=/Library/Java/Home' >> $BASH_ENV
+            echo 'export JAVA_HOME=$(/usr/libexec/java_home -V)' >> $BASH_ENV
       - run:
           name: Install Android dependencies
           command: (yes | sdkmanager "platform-tools" "platforms;android-28" --verbose) || true
