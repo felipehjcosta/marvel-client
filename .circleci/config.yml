@@ -82,14 +82,6 @@ jobs:
   test_ios:
     <<: *ios_config
     steps:
-      - checkout
-      - *generate_cache_key
-      - *restore_gradle_cache
-      - *android_dependencies
-      - *save_gradle_cache
-      - run:
-          name: "Test iOS target"
-          command: ./gradlew iosTest --console=plain -Dorg.gradle.parallel=false
 
 workflows:
   version: 2
