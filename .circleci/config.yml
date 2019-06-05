@@ -45,15 +45,7 @@ reference:
     macos:
       xcode: "10.2.0"
     environment:
-      ANDROID_HOME: "/usr/local/share/android-sdk"
-      ANDROID_SDK_HOME: "/usr/local/share/android-sdk"
-      ANDROID_SDK_ROOT: "/usr/local/share/android-sdk"
-    dependencies:
-      pre:
-        - brew tap caskroom/cask
-        - brew tap caskroom/versions
-        - brew cask install android-sdk
-        - echo y | android update sdk --no-ui --all --filter "android-28"
+      JVM_OPTS: -Xmx3200m
 
 jobs:
   test_android:
