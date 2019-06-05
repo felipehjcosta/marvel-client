@@ -86,10 +86,6 @@ jobs:
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      - *generate_cache_key
-      - *restore_gradle_cache
-      - *android_dependencies
-      - *save_gradle_cache
       - run:
           name: "Echo"
           command: echo "Hello World"
