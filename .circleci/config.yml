@@ -82,6 +82,7 @@ jobs:
   test_ios:
     <<: *ios_config
     steps:
+      - checkout
       - run:
           name: "Echo"
           command: echo "Hello World"
