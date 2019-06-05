@@ -82,6 +82,9 @@ jobs:
   test_ios:
     <<: *ios_config
     steps:
+      - run:
+          name: "Echo"
+          command: echo "Hello World"
 
 workflows:
   version: 2
