@@ -79,9 +79,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install Java 8
+          command: |
+            HOMEBREW_NO_AUTO_UPDATE=1 brew tap AdoptOpenJDK/openjdk
+            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install adoptopenjdk8
+      - run:
           name: Install Android sdk
           command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install homebrew/cask-versions/java8
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
             HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
       - run:
