@@ -49,10 +49,11 @@ reference:
       ANDROID_SDK_HOME: "/usr/local/share/android-sdk"
       ANDROID_SDK_ROOT: "/usr/local/share/android-sdk"
     dependencies:
-      override:
+      pre:
         - brew tap caskroom/cask
         - brew tap caskroom/versions
         - brew cask install android-sdk
+        - echo y | android update sdk --no-ui --all --filter "android-28"
 
 jobs:
   test_android:
