@@ -91,8 +91,8 @@ jobs:
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
             HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
       - run:
-          name: "Echo"
-          command: $ANDROID_HOME/tools/android
+          name: Install Android dependencies
+          command: (yes | sdkmanager "platform-tools" "platforms;android-28" --verbose) || true
 
 workflows:
   version: 2
