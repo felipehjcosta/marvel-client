@@ -44,6 +44,11 @@ reference:
     working_directory: *workspace
     macos:
       xcode: "10.2.0"
+    dependencies:
+      override:
+        - brew tap caskroom/cask
+        - brew tap caskroom/versions
+        - brew cask install android-sdk
 
 jobs:
   test_android:
