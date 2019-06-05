@@ -93,10 +93,6 @@ jobs:
       - run:
           name: Install Android dependencies
           command: (yes | sdkmanager "platform-tools" "platforms;android-28" --verbose) || true
-      - *generate_cache_key
-      - *restore_gradle_cache
-      - *android_dependencies
-      - *save_gradle_cache
 
 workflows:
   version: 2
