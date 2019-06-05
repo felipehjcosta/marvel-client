@@ -83,6 +83,7 @@ jobs:
           command: |
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap AdoptOpenJDK/openjdk
             HOMEBREW_NO_AUTO_UPDATE=1 brew cask install adoptopenjdk8
+            /usr/libexec/java_home -V
       - run:
           name: Install Android sdk
           command: |
