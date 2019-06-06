@@ -5,7 +5,7 @@ reference:
   workspace: &workspace
                ~/code
 
-  ## Configurations
+  ## Docker Configurations
   android_config: &android_config
     working_directory: *workspace
     docker:
@@ -14,6 +14,28 @@ reference:
       TERM: dumb
       JVM_OPTS: -Xmx3200m
 
+  ## Docker Cache
+  docker_generate_cache_key: &docker_generate_cache_key
+    run:
+      name: Generate cache key
+      command: ./.circleci/checksum.sh /tmp/checksum.txt
+
+  docker_gradle_key: &docker_gradle_key
+                docker-gradle-{{ checksum "/tmp/checksum.txt" }}
+
+  docker_restore_gradle_cache: &docker_restore_gradle_cache
+    restore_cache:
+      key: *docker_gradle_key
+
+  docker_save_gradle_cache: &docker_save_gradle_cache
+    save_cache:
+      key: *docker_gradle_key
+      paths:
+      - ~/.gradle/caches
+      - ~/.gradle/wrapper
+      - ~/.android/build-cache
+
+  ## MacOS Configurations
   ios_config: &ios_config
     working_directory: *workspace
     macos:
@@ -23,29 +45,29 @@ reference:
       TERM: dumb
       JVM_OPTS: -Xmx3200m
 
-  ## Cache
-  generate_cache_key: &generate_cache_key
+  ## MacOS Cache
+  macos_generate_cache_key: &macos_generate_cache_key
     run:
       name: Generate cache key
       command: ./.circleci/checksum.sh /tmp/checksum.txt
 
-  gradle_key: &gradle_key
-                gradle-{{ checksum "/tmp/checksum.txt" }}
+  macos_gradle_key: &macos_gradle_key
+                macos-gradle-{{ checksum "/tmp/checksum.txt" }}
 
-  restore_gradle_cache: &restore_gradle_cache
+  macos_restore_gradle_cache: &macos_restore_gradle_cache
     restore_cache:
-      key: *gradle_key
+      key: *macos_gradle_key
 
-  save_gradle_cache: &save_gradle_cache
+  macos_save_gradle_cache: &macos_save_gradle_cache
     save_cache:
-      key: *gradle_key
+      key: *macos_gradle_key
       paths:
-      - ~/.gradle/caches
-      - ~/.gradle/wrapper
-      - ~/.android/build-cache
+        - ~/.gradle/caches
+        - ~/.gradle/wrapper
+        - ~/.android/build-cache
 
   ## Dependencies
-  android_dependencies: &android_dependencies
+  download_android_dependencies: &download_android_dependencies
     run:
       name: Download Android Dependencies
       command: ./gradlew androidDependencies
@@ -55,10 +77,10 @@ jobs:
     <<: *android_config
     steps:
     - checkout
-    - *generate_cache_key
-    - *restore_gradle_cache
-    - *android_dependencies
-    - *save_gradle_cache
+    - *docker_generate_cache_key
+    - *docker_restore_gradle_cache
+    - *download_android_dependencies
+    - *docker_save_gradle_cache
     - run:
         name: "Test Android target"
         command: ./gradlew testDebugUnitTest --console=plain -Dorg.gradle.parallel=false
@@ -67,10 +89,10 @@ jobs:
     <<: *android_config
     steps:
       - checkout
-      - *generate_cache_key
-      - *restore_gradle_cache
-      - *android_dependencies
-      - *save_gradle_cache
+      - *docker_generate_cache_key
+      - *docker_restore_gradle_cache
+      - *download_android_dependencies
+      - *docker_save_gradle_cache
       - run:
           name: "Test JS target"
           command: ./gradlew jsTest --console=plain -Dorg.gradle.parallel=false
@@ -94,10 +116,10 @@ jobs:
       - run:
           name: Install Android dependencies
           command: (yes | sdkmanager "platform-tools" "platforms;android-28" --verbose) || true
-      - *generate_cache_key
-      - *restore_gradle_cache
-      - *android_dependencies
-      - *save_gradle_cache
+      - *macos_generate_cache_key
+      - *macos_restore_gradle_cache
+      - *download_android_dependencies
+      - *macos_save_gradle_cache
       - run:
           name: "Test iOS target"
           command: ./gradlew iosTest --console=plain -Dorg.gradle.parallel=false
