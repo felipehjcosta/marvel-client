@@ -49,7 +49,6 @@ kotlin.targets.matching { it.platformType.name == 'js' }.all { target->
                 dependsOn: [testCompilationTask, installDependenciesMochaNode]) {
             script = file("$projectDir/node_modules/mocha/bin/mocha")
             args = [testCompilationTask.outputFile, '--require', 'source-map-support/register']
-            if (project.hasProperty("teamcity")) args += ['--reporter', 'mocha-teamcity-reporter']
         }
 
         tasks["${targetName}Test"].dependsOn mochaTask
