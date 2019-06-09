@@ -134,6 +134,21 @@ jobs:
           name: "Test iOS target"
           command: ./gradlew iosTest --console=plain -Dorg.gradle.parallel=false
 
+  build:
+    <<: *ios_config
+    steps:
+      - checkout
+      - *macos_install_android
+      - *macos_prepare_environment_variables
+      - *macos_install_android_dependencies
+      - *macos_generate_cache_key
+      - *macos_restore_gradle_cache
+      - *download_android_dependencies
+      - *macos_save_gradle_cache
+      - run:
+          name: "Assemble"
+          command: ./gradlew assemble --console=plain -Dorg.gradle.parallel=false
+
 workflows:
   version: 2
   build:
@@ -141,3 +156,8 @@ workflows:
       - test_android
       - test_js
       - test_ios
+      - build:
+          requires:
+            - test_android
+            - test_js
+            - test_ios
