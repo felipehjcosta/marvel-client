@@ -9,7 +9,7 @@ reference:
   android_config: &android_config
     working_directory: *workspace
     docker:
-    - image: circleci/android:api-28
+      - image: circleci/android:api-28
     environment:
       TERM: dumb
       JVM_OPTS: -Xmx3200m
@@ -21,7 +21,7 @@ reference:
       command: ./.circleci/checksum.sh /tmp/checksum.txt
 
   docker_gradle_key: &docker_gradle_key
-                docker-gradle-{{ checksum "/tmp/checksum.txt" }}
+                       docker-gradle-{{ checksum "/tmp/checksum.txt" }}
 
   docker_restore_gradle_cache: &docker_restore_gradle_cache
     restore_cache:
@@ -31,9 +31,9 @@ reference:
     save_cache:
       key: *docker_gradle_key
       paths:
-      - ~/.gradle/caches
-      - ~/.gradle/wrapper
-      - ~/.android/build-cache
+        - ~/.gradle/caches
+        - ~/.gradle/wrapper
+        - ~/.android/build-cache
 
   ## MacOS Configurations
   ios_config: &ios_config
@@ -45,6 +45,28 @@ reference:
       TERM: dumb
       JVM_OPTS: -Xmx3200m
 
+  ## MacOS Steps
+  macos_install_android: &macos_install_android
+    run:
+      name: Install Android sdk
+      command: |
+        HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
+        HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
+
+  macos_prepare_environment_variables: &macos_prepare_environment_variables
+    run:
+      name: Setup environment variables
+      command: |
+        echo 'export ANDROID_HOME="/usr/local/share/android-sdk"' >> $BASH_ENV
+        echo 'export ANDROID_SDK_HOME="/usr/local/share/android-sdk"' >> $BASH_ENV
+        echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> $BASH_ENV
+        echo 'export JAVA_HOME=$(/usr/libexec/java_home -V)' >> $BASH_ENV
+
+  macos_install_android_dependencies: &macos_install_android_dependencies
+    run:
+      name: Install Android dependencies
+      command: (yes | sdkmanager "platform-tools" "platforms;android-28" --verbose) || true
+
   ## MacOS Cache
   macos_generate_cache_key: &macos_generate_cache_key
     run:
@@ -52,7 +74,7 @@ reference:
       command: ./.circleci/checksum.sh /tmp/checksum.txt
 
   macos_gradle_key: &macos_gradle_key
-                macos-gradle-{{ checksum "/tmp/checksum.txt" }}
+                      macos-gradle-{{ checksum "/tmp/checksum.txt" }}
 
   macos_restore_gradle_cache: &macos_restore_gradle_cache
     restore_cache:
@@ -76,14 +98,14 @@ jobs:
   test_android:
     <<: *android_config
     steps:
-    - checkout
-    - *docker_generate_cache_key
-    - *docker_restore_gradle_cache
-    - *download_android_dependencies
-    - *docker_save_gradle_cache
-    - run:
-        name: "Test Android target"
-        command: ./gradlew testDebugUnitTest --console=plain -Dorg.gradle.parallel=false
+      - checkout
+      - *docker_generate_cache_key
+      - *docker_restore_gradle_cache
+      - *download_android_dependencies
+      - *docker_save_gradle_cache
+      - run:
+          name: "Test Android target"
+          command: ./gradlew testDebugUnitTest --console=plain -Dorg.gradle.parallel=false
 
   test_js:
     <<: *android_config
@@ -101,21 +123,9 @@ jobs:
     <<: *ios_config
     steps:
       - checkout
-      - run:
-          name: Install Android sdk
-          command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask
-            HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk
-      - run:
-          name: Setup environment variables
-          command: |
-            echo 'export ANDROID_HOME="/usr/local/share/android-sdk"' >> $BASH_ENV
-            echo 'export ANDROID_SDK_HOME="/usr/local/share/android-sdk"' >> $BASH_ENV
-            echo 'export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"' >> $BASH_ENV
-            echo 'export JAVA_HOME=$(/usr/libexec/java_home -V)' >> $BASH_ENV
-      - run:
-          name: Install Android dependencies
-          command: (yes | sdkmanager "platform-tools" "platforms;android-28" --verbose) || true
+      - *macos_install_android
+      - *macos_prepare_environment_variables
+      - *macos_install_android_dependencies
       - *macos_generate_cache_key
       - *macos_restore_gradle_cache
       - *download_android_dependencies
@@ -128,6 +138,6 @@ workflows:
   version: 2
   build:
     jobs:
-     - test_android
-     - test_js
-     - test_ios
+      - test_android
+      - test_js
+      - test_ios
