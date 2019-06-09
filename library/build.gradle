@@ -21,8 +21,16 @@ android {
 
 kotlin {
     android()
-    iosArm64("ios")
-    iosX64("iosSim")
+    iosArm64("ios") {
+        binaries {
+            framework('library')
+        }
+    }
+    iosX64("iosSim") {
+        binaries {
+            framework('library')
+        }
+    }
     js {
         compilations.main {
             configure([compileKotlinJs, compileTestKotlinJs]) {
