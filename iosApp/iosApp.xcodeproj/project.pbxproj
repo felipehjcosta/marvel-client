@@ -14,6 +14,8 @@
 		D54D40DC22AD7AF2004BAF04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54D40DA22AD7AF2004BAF04 /* LaunchScreen.storyboard */; };
 		D54D40E722AD7AF2004BAF04 /* iosAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54D40E622AD7AF2004BAF04 /* iosAppTests.swift */; };
 		D54D40F222AD7AF2004BAF04 /* iosAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54D40F122AD7AF2004BAF04 /* iosAppUITests.swift */; };
+		D54D410022AD830C004BAF04 /* library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D54D40FF22AD830B004BAF04 /* library.framework */; };
+		D54D410122AD830C004BAF04 /* library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D54D40FF22AD830B004BAF04 /* library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +35,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D54D410222AD830C004BAF04 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D54D410122AD830C004BAF04 /* library.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		D54D40CE22AD7AF1004BAF04 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54D40D122AD7AF1004BAF04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +63,7 @@
 		D54D40ED22AD7AF2004BAF04 /* iosAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54D40F122AD7AF2004BAF04 /* iosAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosAppUITests.swift; sourceTree = "<group>"; };
 		D54D40F322AD7AF2004BAF04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D54D40FF22AD830B004BAF04 /* library.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = library.framework; path = "../library/build/xcode-frameworks/library.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D54D410022AD830C004BAF04 /* library.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +95,7 @@
 		D54D40C522AD7AF1004BAF04 = {
 			isa = PBXGroup;
 			children = (
+				D54D40FF22AD830B004BAF04 /* library.framework */,
 				D54D40D022AD7AF1004BAF04 /* iosApp */,
 				D54D40E522AD7AF2004BAF04 /* iosAppTests */,
 				D54D40F022AD7AF2004BAF04 /* iosAppUITests */,
@@ -132,9 +151,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D54D40F622AD7AF2004BAF04 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
+				D54D410322AD83DE004BAF04 /* ShellScript */,
 				D54D40CA22AD7AF1004BAF04 /* Sources */,
 				D54D40CB22AD7AF1004BAF04 /* Frameworks */,
 				D54D40CC22AD7AF1004BAF04 /* Resources */,
+				D54D410222AD830C004BAF04 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -251,6 +272,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D54D410322AD83DE004BAF04 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\ncd \"$SRCROOT/../library/build/xcode-frameworks\"\n./gradlew :library:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D54D40CA22AD7AF1004BAF04 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -349,6 +390,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../library/build/xcode-frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -410,6 +452,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../library/build/xcode-frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
