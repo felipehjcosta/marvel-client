@@ -1,9 +1,9 @@
 package com.github.felipehjcosta.marvelclient.androidapp
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
-import com.github.felipehjcosta.marvelclient.ApplicationApi
+import com.github.felipehjcosta.marvelclient.createApplicationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val api = ApplicationApi.newInstance(BuildConfig.MARVEL_PRIVATE_KEY, BuildConfig.MARVEL_PUBLIC_KEY)
+        val api = createApplicationApi(BuildConfig.MARVEL_PRIVATE_KEY, BuildConfig.MARVEL_PUBLIC_KEY)
 
         api.fetchCharacters {
             GlobalScope.apply {

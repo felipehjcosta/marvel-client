@@ -1,4 +1,4 @@
-import com.github.felipehjcosta.marvelclient.ApplicationApi
+import com.github.felipehjcosta.marvelclient.createApplicationApi
 import kotlin.browser.window
 
 val marvelPrivateKey: String = js("MARVEL_PRIVATE_KEY")
@@ -6,7 +6,7 @@ val marvelPublicKey: String = js("MARVEL_PUBLIC_KEY")
 
 @JsName("libFunction")
 fun libFunction() {
-    ApplicationApi.newInstance(marvelPrivateKey, marvelPublicKey).fetchCharacters(::showContent)
+    createApplicationApi(marvelPrivateKey, marvelPublicKey).fetchCharacters(::showContent)
 }
 
 fun showContent(content: String) {

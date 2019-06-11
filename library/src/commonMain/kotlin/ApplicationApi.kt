@@ -15,6 +15,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.io.core.toByteArray
 import kotlin.js.JsName
+import kotlin.jvm.JvmStatic
 
 internal expect val ApplicationDispatcher: CoroutineDispatcher
 
@@ -51,17 +52,16 @@ class ApplicationApi(
         return (timestamp + marvelPrivateKey + marvelPublicKey).toByteArray().md5().asUByteArray()
             .joinToString("") { it.toString(16).padStart(2, '0') }
     }
-
-    companion object {
-        @JsName("newInstance")
-        fun newInstance(
-            marvelPrivateKey: String,
-            marvelPublicKey: String
-        ) = ApplicationApi(HttpClient {
-            install(Logging) {
-                logger = Logger.DEFAULT
-                level = LogLevel.HEADERS
-            }
-        }, marvelPrivateKey, marvelPublicKey)
-    }
 }
+
+@JsName("createApplicationApi")
+@JvmStatic
+fun createApplicationApi(
+    marvelPrivateKey: String,
+    marvelPublicKey: String
+) = ApplicationApi(HttpClient {
+    install(Logging) {
+        logger = Logger.DEFAULT
+        level = LogLevel.HEADERS
+    }
+}, marvelPrivateKey, marvelPublicKey)
