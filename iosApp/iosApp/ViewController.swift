@@ -11,6 +11,8 @@ import library
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var contentLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,8 +20,10 @@ class ViewController: UIViewController {
         let marvelPublicKey = ProcessInfo.processInfo.environment["MARVEL_PUBLIC_KEY"]!
         
         let applicationApi = ApplicationApiKt.createApplicationApi(marvelPrivateKey: marvelPrivateKey, marvelPublicKey: marvelPublicKey)
-        applicationApi.fetchCharacters { (String) -> KotlinUnit in
-            print(String)
+        applicationApi.fetchCharacters { (result) -> KotlinUnit in
+            DispatchQueue.main.async {
+                self.contentLabel.text = result
+            }
             return KotlinUnit()
         }
     }
