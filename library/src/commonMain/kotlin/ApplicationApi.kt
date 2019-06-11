@@ -55,7 +55,6 @@ class ApplicationApi(
 }
 
 @JsName("createApplicationApi")
-@JvmStatic
 fun createApplicationApi(
     marvelPrivateKey: String,
     marvelPublicKey: String
