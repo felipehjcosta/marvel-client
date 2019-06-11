@@ -7,14 +7,20 @@
 //
 
 import UIKit
+import library
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let marvelPrivateKey = ProcessInfo.processInfo.environment["MARVEL_PRIVATE_KEY"]!
+        let marvelPublicKey = ProcessInfo.processInfo.environment["MARVEL_PUBLIC_KEY"]!
+        
+        let applicationApi = ApplicationApiKt.createApplicationApi(marvelPrivateKey: marvelPrivateKey, marvelPublicKey: marvelPublicKey)
+        applicationApi.fetchCharacters { (String) -> KotlinUnit in
+            print(String)
+            return KotlinUnit()
+        }
     }
-
-
 }
-
