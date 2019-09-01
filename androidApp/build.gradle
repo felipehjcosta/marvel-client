@@ -20,8 +20,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            matchingFallbacks = ['release', 'debug']
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            matchingFallbacks = ['release', 'debug']
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

@@ -15,7 +15,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.io.core.toByteArray
 import kotlin.js.JsName
-import kotlin.jvm.JvmStatic
 
 internal expect val ApplicationDispatcher: CoroutineDispatcher
 

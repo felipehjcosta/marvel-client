@@ -1,7 +1,7 @@
 import com.github.felipehjcosta.marvelclient.ApplicationApi
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.MockHttpResponse
+import io.ktor.client.engine.mock.respond
 import io.ktor.http.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.io.ByteReadChannel
@@ -19,33 +19,34 @@ class ApplicationApiTests {
     private val Url.baseUrl: String get() = "${protocol.name}://$hostWithPortIfRequired"
     private val Url.fullUrl: String get() = "${protocol.name}://$hostWithPortIfRequired$fullPath"
 
-    private val httpMockEngine = MockEngine {
-        when (url.baseUrl) {
-            "https://gateway.marvel.com" -> {
-                return@MockEngine if (
-                    url.parameters["limit"]?.isNotBlank() == true
-                    && url.parameters["offset"]?.isNotBlank() == true
-                    && url.parameters["ts"]?.isNotBlank() == true
-                    && url.parameters["apikey"]?.isNotBlank() == true
-                    && url.parameters["hash"]?.isNotBlank() == true
-                ) {
-                    MockHttpResponse(
-                        call,
-                        HttpStatusCode.OK,
-                        ByteReadChannel("{\"message\":\"Hello World!\"}".toByteArray(Charsets.UTF_8)),
-                        headersOf("Content-Type" to listOf(ContentType.Text.JavaScript.toString()))
-                    )
-                } else {
-                    error("Unhandled ${url.fullUrl}")
+    private val fakeClient = HttpClient(MockEngine) {
+        engine {
+            addHandler {
+                return@addHandler when (it.url.baseUrl) {
+                    "https://gateway.marvel.com" -> {
+                        if (
+                            it.url.parameters["limit"]?.isNotBlank() == true
+                            && it.url.parameters["offset"]?.isNotBlank() == true
+                            && it.url.parameters["ts"]?.isNotBlank() == true
+                            && it.url.parameters["apikey"]?.isNotBlank() == true
+                            && it.url.parameters["hash"]?.isNotBlank() == true
+                        ) {
+                            respond(
+                                content = ByteReadChannel("{\"message\":\"Hello World!\"}".toByteArray(Charsets.UTF_8)),
+                                status = HttpStatusCode.OK,
+                                headers = headersOf("Content-Type" to listOf(ContentType.Text.JavaScript.toString()))
+                            )
+                        } else {
+                            error("Unhandled ${it.url.fullUrl}")
+                        }
+                    }
+                    else -> {
+                        error("Unhandled ${it.url.fullUrl}")
+                    }
                 }
-            }
-            else -> {
-                error("Unhandled ${url.fullUrl}")
             }
         }
     }
-
-    private val fakeClient = HttpClient(httpMockEngine)
 
     private val applicationApi = ApplicationApi(fakeClient, marvelPrivateKey, marvelPublicKey)
 
@@ -55,7 +56,7 @@ class ApplicationApiTests {
     }
 
     @Test
-    fun ensureFetchCharactersWithCallbackExecuteWithSuccess() = runTest{
+    fun ensureFetchCharactersWithCallbackExecuteWithSuccess() = runTest {
         applicationApi.fetchCharacters {
             assertEquals("{\"message\":\"Hello World!\"}", it)
         }

@@ -7,7 +7,7 @@ module.exports = (env) => {
         entry: path.resolve(__dirname, 'build/classes/kotlin/js/main/library.js'),
         resolve: {
             "modules": [
-                "node_modules"
+                path.resolve(__dirname, '../build/js')
             ]
         },
         output: {

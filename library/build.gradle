@@ -5,15 +5,18 @@ apply plugin: 'maven-publish'
 group 'com.github.felipehjcosta.marvelclient'
 version '0.1.0'
 
-
 android {
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 21
     }
     buildTypes {
+        debug {
+            matchingFallbacks = ['release', 'debug']
+        }
         release {
             minifyEnabled true
+            matchingFallbacks = ['release', 'debug']
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -54,8 +57,12 @@ kotlin {
                 implementation kotlin('stdlib-common')
                 implementation "io.ktor:ktor-client-core:$ktor_version"
                 implementation "io.ktor:ktor-client-logging:$ktor_version"
-                implementation "com.soywiz:krypto-metadata:$krypto_version"
-                implementation "com.soywiz:klock-metadata:$klock_version"
+                implementation("com.soywiz.korlibs.krypto:krypto:$krypto_version") {
+                    exclude group: 'com.soywiz.korlibs.krypto', module: 'krypto-android-debug'
+                }
+                implementation("com.soywiz.korlibs.klock:klock:$klock_version") {
+                    exclude group: 'com.soywiz.korlibs.klock', module: 'klock-android-debug'
+                }
             }
         }
         commonTest {
@@ -72,8 +79,8 @@ kotlin {
                 implementation "io.ktor:ktor-client-android:$ktor_version"
                 implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
                 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
-                implementation "com.soywiz:krypto-android:$krypto_version"
-                implementation "com.soywiz:klock-android:$klock_version"
+                implementation "com.soywiz.korlibs.krypto:krypto-android:$krypto_version"
+                implementation "com.soywiz.korlibs.klock:klock-android:$klock_version"
             }
         }
         androidTest {
@@ -82,8 +89,8 @@ kotlin {
                 implementation kotlin('test-junit')
                 implementation 'junit:junit:4.12'
                 implementation "io.ktor:ktor-client-mock-jvm:$ktor_version"
-                implementation "com.soywiz:krypto-android:$krypto_version"
-                implementation "com.soywiz:klock-android:$klock_version"
+                implementation "com.soywiz.korlibs.krypto:krypto-android:$krypto_version"
+                implementation "com.soywiz.korlibs.klock:klock-android:$klock_version"
             }
         }
         jsMain {
@@ -91,8 +98,10 @@ kotlin {
                 implementation kotlin('stdlib-js')
                 implementation "io.ktor:ktor-client-js:$ktor_version"
                 implementation "io.ktor:ktor-client-logging-js:$ktor_version"
-                implementation "com.soywiz:krypto-js:$krypto_version"
-                implementation "com.soywiz:klock-js:$klock_version"
+                implementation "com.soywiz.korlibs.krypto:krypto-js:$krypto_version"
+                implementation "com.soywiz.korlibs.klock:klock-js:$klock_version"
+
+                implementation npm("text-encoding", "0.7.0")
             }
         }
         jsTest {
@@ -107,8 +116,8 @@ kotlin {
             dependencies {
                 implementation "io.ktor:ktor-client-ios:$ktor_version"
                 implementation "io.ktor:ktor-client-logging-native:$ktor_version"
-                implementation "com.soywiz:krypto-iosarm64:$krypto_version"
-                implementation "com.soywiz:klock-iosarm64:$klock_version"
+                implementation "com.soywiz.korlibs.krypto:krypto-iosarm64:$krypto_version"
+                implementation "com.soywiz.korlibs.klock:klock-iosarm64:$klock_version"
             }
         }
 
@@ -123,8 +132,8 @@ kotlin {
             dependencies {
                 implementation "io.ktor:ktor-client-ios:$ktor_version"
                 implementation "io.ktor:ktor-client-logging-iosx64:$ktor_version"
-                implementation "com.soywiz:krypto-iosx64:$krypto_version"
-                implementation "com.soywiz:klock-iosx64:$klock_version"
+                implementation "com.soywiz.korlibs.krypto:krypto-iosx64:$krypto_version"
+                implementation "com.soywiz.korlibs.klock:klock-iosx64:$klock_version"
             }
         }
 
@@ -142,12 +151,9 @@ configurations {
     compileClasspath
 }
 
-apply from: rootProject.file('gradle/node-js.gradle')
-apply from: rootProject.file('gradle/test-mocha-js.gradle')
-
-task iosTest(dependsOn: 'linkTestDebugExecutableIosSim') {
+task iosTest(dependsOn: 'linkDebugTestIosSim') {
     doLast {
-        def binary = kotlin.targets.iosSim.compilations.test.getBinary('EXECUTABLE', 'DEBUG')
+        def binary = kotlin.targets.iosSim.binaries.getTest("DEBUG").outputFile
         exec {
             commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", binary.absolutePath
         }

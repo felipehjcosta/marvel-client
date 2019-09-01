@@ -4,7 +4,11 @@ import kotlin.browser.window
 val marvelPrivateKey: String = js("MARVEL_PRIVATE_KEY")
 val marvelPublicKey: String = js("MARVEL_PUBLIC_KEY")
 
-@JsName("libFunction")
+fun main() {
+    libFunction()
+}
+
+//@JsName("libFunction")
 fun libFunction() {
     createApplicationApi(marvelPrivateKey, marvelPublicKey).fetchCharacters(::showContent)
 }

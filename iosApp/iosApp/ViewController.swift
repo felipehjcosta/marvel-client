@@ -20,11 +20,10 @@ class ViewController: UIViewController {
         let marvelPublicKey = ProcessInfo.processInfo.environment["MARVEL_PUBLIC_KEY"]!
         
         let applicationApi = ApplicationApiKt.createApplicationApi(marvelPrivateKey: marvelPrivateKey, marvelPublicKey: marvelPublicKey)
-        applicationApi.fetchCharacters { (result) -> KotlinUnit in
+        applicationApi.fetchCharacters { (result) -> Void in
             DispatchQueue.main.async {
                 self.contentLabel.text = result
             }
-            return KotlinUnit()
         }
     }
 }

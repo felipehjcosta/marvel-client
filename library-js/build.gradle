@@ -1,66 +1,28 @@
-apply plugin: "com.moowork.node"
-apply plugin: 'kotlin2js'
+group 'com.github.felipehjcosta.marvelclient.js'
+version '1.0-SNAPSHOT'
 
-compileKotlin2Js {
-    kotlinOptions.metaInfo = true
-    kotlinOptions.sourceMap = true
-    kotlinOptions.suppressWarnings = true
-    kotlinOptions.verbose = true
-    kotlinOptions.main = "call"
-    kotlinOptions.moduleKind = "umd"
-}
+apply plugin: "org.jetbrains.kotlin.js"
 
-def outputDir = "${projectDir}/node_modules"
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
-    implementation project(':library')
-}
-
-task assembleJs(type: Sync) {
-    configurations.runtimeClasspath.each { File file ->
-        from(zipTree(file.absolutePath), {
-            includeEmptyDirs = false
-            include { fileTreeElement ->
-                def path = fileTreeElement.path
-                path.endsWith(".js") && (path.startsWith("META-INF/resources/") ||
-                        !path.startsWith("META-INF/"))
-            }
-        })
-    }
-    from compileKotlin2Js.destinationDir
-    into "${outputDir}"
-    dependsOn classes
-}
-
-// wont be needed once https://github.com/ktorio/ktor/issues/961 is fixed
-task installTextEncode(type: NpmTask, dependsOn: [npmInstall]) {
-    // install the text-encoding package only
-    args = ['install', 'text-encoding']
-}
-
-task webpack(type: NodeTask, dependsOn: [npmInstall, installTextEncode]) {
-    script = file("$projectDir/node_modules/webpack/bin/webpack")
-    args = ["--env.MARVEL_PRIVATE_KEY=$MARVEL_PRIVATE_KEY", "--env.MARVEL_PUBLIC_KEY=$MARVEL_PUBLIC_KEY"]
-}
-
-assemble.dependsOn assembleJs
-webpack.dependsOn assemble
-build.dependsOn webpack
-
-repositories.whenObjectAdded {
-    if (it instanceof IvyArtifactRepository) {
-        metadataSources {
-            artifact()
+kotlin {
+    target {
+        browser {
+//            configure([compilations.main, compilations.test]) {
+//                kotlinOptions {
+//                    metaInfo = true
+//                    sourceMap = true
+//                    moduleKind = 'commonjs'
+////                    main = "call"
+//                    allWarningsAsErrors = true
+//                }
+//            }
         }
     }
-}
-
-node {
-    version = "$node_version"
-    download = true
-}
-
-clean.doFirst() {
-    delete "$outputDir"
+    sourceSets {
+        main {
+            dependencies {
+                implementation project(':library')
+                implementation kotlin("stdlib-js")
+            }
+        }
+    }
 }

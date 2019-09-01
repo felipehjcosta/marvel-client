@@ -4,13 +4,13 @@ buildscript {
         maven { url "http://dl.bintray.com/kotlin/kotlin-eap" }
         maven { url "https://kotlin.bintray.com/kotlinx" }
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://dl.bintray.com/korlibs/korlibs" }
         jcenter()
     }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.android.tools.build:gradle:$android_gradle_plugin"
-        classpath "com.moowork.gradle:gradle-node-plugin:$gradle_node_plugin"
     }
 }
 
@@ -23,6 +23,7 @@ subprojects {
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://dl.bintray.com/kotlin/ktor" }
         maven { url "https://dl.bintray.com/soywiz/soywiz" }
+        maven { url "https://dl.bintray.com/korlibs/korlibs" }
         jcenter()
     }
 }
