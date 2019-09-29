@@ -154,8 +154,9 @@ configurations {
 task iosTest(dependsOn: 'linkDebugTestIosSim') {
     doLast {
         def binary = kotlin.targets.iosSim.binaries.getTest("DEBUG").outputFile
+        def device = "iPhone 11"
         exec {
-            commandLine 'xcrun', 'simctl', 'spawn', "iPhone Xʀ", binary.absolutePath
+            commandLine 'xcrun', 'simctl', 'spawn', "--standalone", device, binary.absolutePath
         }
     }
 }
