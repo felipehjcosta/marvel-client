@@ -15,6 +15,11 @@ kotlin {
 //                    allWarningsAsErrors = true
 //                }
 //            }
+            webpackTask {
+                runTask {
+                    archiveFileName = "marvel-client-library-js.js"
+                }
+            }
         }
     }
     sourceSets {

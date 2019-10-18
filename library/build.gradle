@@ -45,6 +45,7 @@ kotlin {
                 }
             }
         }
+        browser()
     }
     sourceSets {
         all {
@@ -59,9 +60,11 @@ kotlin {
                 implementation "io.ktor:ktor-client-logging:$ktor_version"
                 implementation("com.soywiz.korlibs.krypto:krypto:$krypto_version") {
                     exclude group: 'com.soywiz.korlibs.krypto', module: 'krypto-android-debug'
+                    exclude group: 'com.soywiz.korlibs.krypto', module: 'krypto-jvm'
                 }
                 implementation("com.soywiz.korlibs.klock:klock:$klock_version") {
                     exclude group: 'com.soywiz.korlibs.klock', module: 'klock-android-debug'
+                    exclude group: 'com.soywiz.korlibs.klock', module: 'klock-jvm'
                 }
             }
         }
